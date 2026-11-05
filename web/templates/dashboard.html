@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -118,30 +118,31 @@
             font-size: 18px;
             margin-bottom: 22px;
         }
-        .sessao h3{
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-}
 
-.sessao span {
-    color: #cbd5e1;
-    font-size: 13px;
-}
+        .sessao h3 {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
 
-.sessao form {
-    margin: 0;
-}
+        .sessao span {
+            color: #cbd5e1;
+            font-size: 13px;
+        }
 
-.botao-sair {
-    padding: 9px 14px;
-    background: #1e293b;
-    color: white;
-    border: 1px solid #334155;
-    border-radius: 20px;
-    cursor: pointer;
-}
+        .sessao form {
+            margin: 0;
+        }
+
+        .botao-sair {
+            padding: 9px 14px;
+            background: #1e293b;
+            color: white;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            cursor: pointer;
+        }
 
 
         .pesquisa {
@@ -340,22 +341,18 @@
         </div>
 
         <div class="sessao">
-    <div class="status">● Sistema de monitoramento</div>
+            <div class="status">● Sistema de monitoramento</div>
 
-    <span>Operador: {{ usuario_nome }}</span>
+            <span>Operador: {{ usuario_nome }}</span>
 
-    <form action="{{ url_for('logout') }}" method="POST">
-        <input
-            type="hidden"
-            name="csrf_token"
-            value="{{ csrf_token() }}"
-        >
+            <form action="{{ url_for('logout') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <button type="submit" class="botao-sair">
-            Sair
-        </button>
-    </form>
-</div>
+                <button type="submit" class="botao-sair">
+                    Sair
+                </button>
+            </form>
+        </div>
     </header>
 
     <main>
@@ -393,13 +390,8 @@
             <h2>⌕ Pesquisar endereço IP</h2>
 
             <form class="pesquisa" action="/dashboard" method="GET">
-                <input
-                    type="text"
-                    name="ip"
-                    value="{{ ip_consultado or '' }}"
-                    placeholder="Digite um endereço IP. Ex.: 185.220.101.1"
-                    required
-                >
+                <input type="text" name="ip" value="{{ ip_consultado or '' }}"
+                    placeholder="Digite um endereço IP. Ex.: 185.220.101.1" required>
 
                 <button type="submit">Pesquisar IP</button>
             </form>
@@ -412,75 +404,76 @@
 
             {% if erro_pesquisa %}
 
-                <p class="erro">{{ erro_pesquisa }}</p>
+            <p class="erro">{{ erro_pesquisa }}</p>
 
             {% else %}
 
-                <div class="lista">
-                    <span>Total de eventos</span>
-                    <strong>{{ eventos_ip|length }}</strong>
-                </div>
+            <div class="lista">
+                <span>Total de eventos</span>
+                <strong>{{ eventos_ip|length }}</strong>
+            </div>
+
+            <div class="lista">
+                <span>Total de alertas</span>
+                <strong class="ip-alertas">{{ alertas_ip|length }}</strong>
+            </div>
+
+            {% if resultado_ml %}
+
+            {% set classificacao = resultado_ml.get("classificacao", "Não disponível") %}
+            {% set risco = resultado_ml.get("pontuacao_risco", "Não disponível") %}
+
+            <div class="lista">
+                <span>Classificação</span>
+
+                <strong
+                    class="classificacao {% if classificacao|string|upper == 'ATAQUE' %}ataque{% elif classificacao|string|upper == 'NORMAL' %}normal{% endif %}">
+                    {{ classificacao }}
+                </strong>
+            </div>
+
+            <div class="lista">
+                <span>Risco identificado</span>
+
+                <strong>
+                    {% if risco is number %}
+                    {{ "%.2f"|format(risco) }}%
+                    {% else %}
+                    {{ risco }}
+                    {% endif %}
+                </strong>
+            </div>
+
+            {% else %}
+
+            <p class="erro">
+                Não foi possível obter a classificação de Machine Learning para este IP.
+            </p>
+
+            {% endif %}
+
+            <div class="detalhes">
+                <h3>Alertas encontrados</h3>
+
+                {% for alerta in alertas_ip %}
 
                 <div class="lista">
-                    <span>Total de alertas</span>
-                    <strong class="ip-alertas">{{ alertas_ip|length }}</strong>
+                    <span>
+                        {{ alerta.get("tipo", "Alerta") }} -
+                        {{ alerta.get("descricao", "Sem descrição") }}
+                    </span>
+
+                    <strong>
+                        {{ alerta.get("severidade", "Não informada") }}
+                    </strong>
                 </div>
-
-                {% if resultado_ml %}
-
-                    {% set classificacao = resultado_ml.get("classificacao", "Não disponível") %}
-                    {% set risco = resultado_ml.get("pontuacao_risco", "Não disponível") %}
-
-                    <div class="lista">
-                        <span>Classificação</span>
-
-                        <strong class="classificacao {% if classificacao|string|upper == 'ATAQUE' %}ataque{% elif classificacao|string|upper == 'NORMAL' %}normal{% endif %}">
-                            {{ classificacao }}
-                        </strong>
-                    </div>
-
-                    <div class="lista">
-                        <span>Risco identificado</span>
-
-                        <strong>
-                            {% if risco is number %}
-                                {{ "%.2f"|format(risco) }}%
-                            {% else %}
-                                {{ risco }}
-                            {% endif %}
-                        </strong>
-                    </div>
 
                 {% else %}
 
-                    <p class="erro">
-                        Não foi possível obter a classificação de Machine Learning para este IP.
-                    </p>
+                <p class="vazio">Nenhum alerta registrado para este IP.</p>
 
-                {% endif %}
-
-                <div class="detalhes">
-                    <h3>Alertas encontrados</h3>
-
-                    {% for alerta in alertas_ip %}
-
-                        <div class="lista">
-                            <span>
-                                {{ alerta.get("tipo", "Alerta") }} -
-                                {{ alerta.get("descricao", "Sem descrição") }}
-                            </span>
-
-                            <strong>
-                                {{ alerta.get("severidade", "Não informada") }}
-                            </strong>
-                        </div>
-
-                    {% else %}
-
-                        <p class="vazio">Nenhum alerta registrado para este IP.</p>
-
-                    {% endfor %}
-                </div>
+                {% endfor %}
+            </div>
 
             {% endif %}
         </section>
@@ -491,19 +484,20 @@
             <h2>Alertas por gravidade</h2>
 
             {% for item in alertas_por_severidade %}
-                {% set gravidade = item["_id"]|upper %}
+            {% set gravidade = item["_id"]|upper %}
 
-                <div class="lista">
-                    <span>{{ gravidade }}</span>
+            <div class="lista">
+                <span>{{ gravidade }}</span>
 
-                    <strong class="{% if gravidade in ['CRITICA', 'CRÍTICA'] %}critica{% elif gravidade == 'ALTA' %}alta{% elif gravidade in ['MEDIA', 'MÉDIA'] %}media{% elif gravidade == 'BAIXA' %}baixa{% endif %}">
-                        {{ item["total"] }}
-                    </strong>
-                </div>
+                <strong
+                    class="{% if gravidade in ['CRITICA', 'CRÍTICA'] %}critica{% elif gravidade == 'ALTA' %}alta{% elif gravidade in ['MEDIA', 'MÉDIA'] %}media{% elif gravidade == 'BAIXA' %}baixa{% endif %}">
+                    {{ item["total"] }}
+                </strong>
+            </div>
 
             {% else %}
 
-                <p class="vazio">Nenhum alerta encontrado.</p>
+            <p class="vazio">Nenhum alerta encontrado.</p>
 
             {% endfor %}
         </section>
@@ -513,17 +507,17 @@
 
             {% for item in top_ips %}
 
-                <div class="lista">
-                    <span>{{ item["_id"] }}</span>
+            <div class="lista">
+                <span>{{ item["_id"] }}</span>
 
-                    <strong class="ip-alertas">
-                        {{ item["total"] }} alertas
-                    </strong>
-                </div>
+                <strong class="ip-alertas">
+                    {{ item["total"] }} alertas
+                </strong>
+            </div>
 
             {% else %}
 
-                <p class="vazio">Nenhum IP suspeito encontrado.</p>
+            <p class="vazio">Nenhum IP suspeito encontrado.</p>
 
             {% endfor %}
         </section>
@@ -533,14 +527,14 @@
 
             {% for item in eventos_por_fonte %}
 
-                <div class="lista">
-                    <span>{{ item["_id"] or "Não identificada" }}</span>
-                    <strong>{{ item["total"] }} eventos</strong>
-                </div>
+            <div class="lista">
+                <span>{{ item["_id"] or "Não identificada" }}</span>
+                <strong>{{ item["total"] }} eventos</strong>
+            </div>
 
             {% else %}
 
-                <p class="vazio">Nenhum evento encontrado.</p>
+            <p class="vazio">Nenhum evento encontrado.</p>
 
             {% endfor %}
         </section>
@@ -554,10 +548,10 @@
             <strong>FEITO POR:</strong>
             Victoria de Paula<br>
             Igor Andrade Cavalcante<br>
-            Eduardo Estevam<br>
             Gabriel Laíno
         </div>
     </footer>
 
 </body>
+
 </html>
