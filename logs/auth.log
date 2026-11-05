@@ -1,0 +1,24 @@
+
+Nov 04 08:01:12 secura-server sshd[1001]: Failed password for admin from 185.220.101.1 port 41001 ssh2
+Nov 04 08:01:18 secura-server sshd[1002]: Failed password for admin from 185.220.101.1 port 41002 ssh2
+Nov 04 08:01:25 secura-server sshd[1003]: Failed password for root from 185.220.101.1 port 41003 ssh2
+Nov 04 08:01:31 secura-server sshd[1004]: Failed password for root from 185.220.101.1 port 41004 ssh2
+Nov 04 08:01:39 secura-server sshd[1005]: Failed password for admin from 185.220.101.1 port 41005 ssh2
+Nov 04 08:01:45 secura-server sshd[1006]: Failed password for user from 185.220.101.1 port 41006 ssh2
+Nov 04 08:01:52 secura-server sshd[1007]: Failed password for root from 185.220.101.1 port 41007 ssh2
+Nov 04 08:02:01 secura-server sshd[1008]: Failed password for admin from 185.220.101.1 port 41008 ssh2
+Nov 04 08:02:08 secura-server sshd[1009]: Failed password for user from 185.220.101.1 port 41009 ssh2
+Nov 04 08:02:15 secura-server sshd[1010]: Failed password for root from 185.220.101.1 port 41010 ssh2
+Nov 04 08:05:10 secura-server sshd[1011]: Accepted password for victoria from 192.168.1.10 port 42001 ssh2
+Nov 04 08:06:14 secura-server sshd[1012]: Accepted password for suporte from 192.168.1.20 port 42002 ssh2
+Nov 04 08:07:20 secura-server sshd[1013]: Failed password for guest from 192.168.1.30 port 42003 ssh2
+Nov 04 08:08:02 secura-server sshd[1014]: Accepted password for admin from 192.168.1.10 port 42004 ssh2
+Nov 04 08:09:11 secura-server sshd[1015]: Accepted password for operador from 192.168.1.25 port 42005 ssh2
+Nov 04 08:10:09 secura-server sshd[1016]: Failed password for teste from 192.168.1.40 port 42006 ssh2
+Nov 04 08:11:18 secura-server sshd[1017]: Accepted password for victoria from 192.168.1.10 port 42007 ssh2
+Nov 04 08:12:27 secura-server sshd[1018]: Accepted password for suporte from 192.168.1.20 port 42008 ssh2
+Nov 04 08:13:35 secura-server sshd[1019]: Failed password for guest from 192.168.1.30 port 42009 ssh2
+Nov 04 08:14:42 secura-server sshd[1020]: Accepted password for admin from 192.168.1.10 port 42010 ssh2
+Nov 04 08:15:50 secura-server sshd[1021]: Accepted password for operador from 192.168.1.25 port 42011 ssh2
+Nov 04 08:16:58 secura-server sshd[1022]: Failed password for teste from 192.168.1.40 port 42012 ssh2
+Nov 04 08:18:06 secura-server sshd[1023]: Accepted password for victoria from 192.168.1.10 port 42013 ssh2

@@ -1,0 +1,22 @@
+
+{
+     "brute_force": {
+        "max_failed_attempts": 10,
+        "severity": "ALTA"
+    },
+    "port_scan": {
+        "min_distinct_ports": 7,
+        "severity": "ALTA"
+    },
+    "blacklist": {
+    "ips": [
+        "185.220.101.1",
+        "203.0.113.50",
+        "198.51.100.60"
+    ],
+    "severity": "CRITICA"}
+}
+
+   
+
+

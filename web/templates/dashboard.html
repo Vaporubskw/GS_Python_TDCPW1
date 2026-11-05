@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecuraPy | Security Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #05070c;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #090e18;
+            padding: 25px 45px;
+            border-bottom: 1px solid #17263a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #38bdf8;
+            font-size: 29px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: #8998aa;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .status {
+            color: #4ade80;
+            font-size: 12px;
+            border: 1px solid #166534;
+            background: #052e16;
+            padding: 9px 14px;
+            border-radius: 20px;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: auto;
+            padding: 38px 45px;
+        }
+
+        .titulo {
+            margin-bottom: 28px;
+        }
+
+        .titulo h2 {
+            font-size: 25px;
+            margin-bottom: 9px;
+        }
+
+        .titulo p {
+            color: #8998aa;
+            font-size: 14px;
+        }
+
+        .indicadores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #0c111b;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #1c293a;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            border-color: #1685b5;
+            transform: translateY(-3px);
+        }
+
+        .card h3 {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: normal;
+            margin-bottom: 18px;
+        }
+
+        .card strong {
+            font-size: 32px;
+            color: #f8fafc;
+        }
+
+        .card .critica {
+            color: #ef4444;
+        }
+
+        .secao {
+            background: #0b1019;
+            padding: 27px;
+            border-radius: 13px;
+            border: 1px solid #1c293a;
+            margin-bottom: 24px;
+        }
+
+        .secao h2 {
+            font-size: 18px;
+            margin-bottom: 22px;
+        }
+        .sessao h3{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.sessao span {
+    color: #cbd5e1;
+    font-size: 13px;
+}
+
+.sessao form {
+    margin: 0;
+}
+
+.botao-sair {
+    padding: 9px 14px;
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+
+        .pesquisa {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .pesquisa input {
+            flex: 1;
+            min-width: 220px;
+            padding: 15px 17px;
+            border-radius: 9px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            background: rgba(15, 23, 42, 0.55);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .pesquisa input::placeholder {
+            color: #64748b;
+        }
+
+        .pesquisa input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.12);
+        }
+
+        .pesquisa button {
+            padding: 14px 25px;
+            background: #0284c7;
+            color: white;
+            border: 1px solid #0284c7;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .pesquisa button:hover {
+            background: #0369a1;
+        }
+
+        .lista {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 4px;
+            border-bottom: 1px solid #202b3b;
+            font-size: 14px;
+        }
+
+        .lista:last-child {
+            border-bottom: none;
+        }
+
+        .lista span {
+            color: #cbd5e1;
+        }
+
+        .lista strong {
+            color: #e2e8f0;
+        }
+
+        .critica {
+            color: #ef4444 !important;
+        }
+
+        .alta {
+            color: #f97316 !important;
+        }
+
+        .media {
+            color: #eab308 !important;
+        }
+
+        .baixa {
+            color: #4ade80 !important;
+        }
+
+        .ip-alertas {
+            color: #ef4444 !important;
+            font-weight: bold;
+        }
+
+        .origens {
+            background: #090e18;
+            border: 1px solid #263b53;
+        }
+
+        .origens h2 {
+            color: #38bdf8;
+        }
+
+        .origens .lista strong {
+            color: #38bdf8;
+        }
+
+        .vazio {
+            color: #64748b;
+            font-size: 14px;
+            padding: 8px 0;
+        }
+
+        .resultado {
+            border-color: #164e70;
+        }
+
+        .resultado h2 {
+            color: #38bdf8;
+        }
+
+        .classificacao {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .ataque {
+            color: #ef4444 !important;
+        }
+
+        .normal {
+            color: #4ade80 !important;
+        }
+
+        .erro {
+            color: #f97316;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+
+        .detalhes {
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .detalhes h3 {
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+
+        footer {
+            text-align: center;
+            color: #718096;
+            padding: 28px 20px;
+            border-top: 1px solid #17263a;
+            background: #080c13;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+
+        .integrantes {
+            margin-top: 15px;
+            color: #94a3b8;
+            line-height: 2;
+            font-size: 12px;
+        }
+
+        .integrantes strong {
+            display: block;
+            color: #38bdf8;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 22px;
+            }
+
+            main {
+                padding: 25px 18px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .secao {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <h1>SecuraPy</h1>
+            <p>Plataforma Inteligente de Monitoramento e Segurança</p>
+        </div>
+
+        <div class="sessao">
+    <div class="status">● Sistema de monitoramento</div>
+
+    <span>Operador: {{ usuario_nome }}</span>
+
+    <form action="{{ url_for('logout') }}" method="POST">
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <button type="submit" class="botao-sair">
+            Sair
+        </button>
+    </form>
+</div>
+    </header>
+
+    <main>
+
+        <section class="titulo">
+            <h2>Dashboard de Segurança</h2>
+            <p>Visão geral dos eventos e ameaças identificadas no sistema.</p>
+        </section>
+
+        <section class="indicadores">
+
+            <div class="card">
+                <h3>Total de eventos</h3>
+                <strong>{{ total_eventos }}</strong>
+            </div>
+
+            <div class="card">
+                <h3>Total de alertas</h3>
+                <strong>{{ total_alertas }}</strong>
+            </div>
+
+            <div class="card">
+                <h3>IPs monitorados</h3>
+                <strong>{{ total_ips }}</strong>
+            </div>
+
+            <div class="card">
+                <h3>Alertas críticos</h3>
+                <strong class="critica">{{ alertas_criticos }}</strong>
+            </div>
+
+        </section>
+
+        <section class="secao">
+            <h2>⌕ Pesquisar endereço IP</h2>
+
+            <form class="pesquisa" action="/dashboard" method="GET">
+                <input
+                    type="text"
+                    name="ip"
+                    value="{{ ip_consultado or '' }}"
+                    placeholder="Digite um endereço IP. Ex.: 185.220.101.1"
+                    required
+                >
+
+                <button type="submit">Pesquisar IP</button>
+            </form>
+        </section>
+
+        {% if ip_consultado %}
+
+        <section class="secao resultado">
+            <h2>Resultado da consulta: {{ ip_consultado }}</h2>
+
+            {% if erro_pesquisa %}
+
+                <p class="erro">{{ erro_pesquisa }}</p>
+
+            {% else %}
+
+                <div class="lista">
+                    <span>Total de eventos</span>
+                    <strong>{{ eventos_ip|length }}</strong>
+                </div>
+
+                <div class="lista">
+                    <span>Total de alertas</span>
+                    <strong class="ip-alertas">{{ alertas_ip|length }}</strong>
+                </div>
+
+                {% if resultado_ml %}
+
+                    {% set classificacao = resultado_ml.get("classificacao", "Não disponível") %}
+                    {% set risco = resultado_ml.get("pontuacao_risco", "Não disponível") %}
+
+                    <div class="lista">
+                        <span>Classificação</span>
+
+                        <strong class="classificacao {% if classificacao|string|upper == 'ATAQUE' %}ataque{% elif classificacao|string|upper == 'NORMAL' %}normal{% endif %}">
+                            {{ classificacao }}
+                        </strong>
+                    </div>
+
+                    <div class="lista">
+                        <span>Risco identificado</span>
+
+                        <strong>
+                            {% if risco is number %}
+                                {{ "%.2f"|format(risco) }}%
+                            {% else %}
+                                {{ risco }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                {% else %}
+
+                    <p class="erro">
+                        Não foi possível obter a classificação de Machine Learning para este IP.
+                    </p>
+
+                {% endif %}
+
+                <div class="detalhes">
+                    <h3>Alertas encontrados</h3>
+
+                    {% for alerta in alertas_ip %}
+
+                        <div class="lista">
+                            <span>
+                                {{ alerta.get("tipo", "Alerta") }} -
+                                {{ alerta.get("descricao", "Sem descrição") }}
+                            </span>
+
+                            <strong>
+                                {{ alerta.get("severidade", "Não informada") }}
+                            </strong>
+                        </div>
+
+                    {% else %}
+
+                        <p class="vazio">Nenhum alerta registrado para este IP.</p>
+
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+        </section>
+
+        {% endif %}
+
+        <section class="secao">
+            <h2>Alertas por gravidade</h2>
+
+            {% for item in alertas_por_severidade %}
+                {% set gravidade = item["_id"]|upper %}
+
+                <div class="lista">
+                    <span>{{ gravidade }}</span>
+
+                    <strong class="{% if gravidade in ['CRITICA', 'CRÍTICA'] %}critica{% elif gravidade == 'ALTA' %}alta{% elif gravidade in ['MEDIA', 'MÉDIA'] %}media{% elif gravidade == 'BAIXA' %}baixa{% endif %}">
+                        {{ item["total"] }}
+                    </strong>
+                </div>
+
+            {% else %}
+
+                <p class="vazio">Nenhum alerta encontrado.</p>
+
+            {% endfor %}
+        </section>
+
+        <section class="secao">
+            <h2>Principais IPs suspeitos</h2>
+
+            {% for item in top_ips %}
+
+                <div class="lista">
+                    <span>{{ item["_id"] }}</span>
+
+                    <strong class="ip-alertas">
+                        {{ item["total"] }} alertas
+                    </strong>
+                </div>
+
+            {% else %}
+
+                <p class="vazio">Nenhum IP suspeito encontrado.</p>
+
+            {% endfor %}
+        </section>
+
+        <section class="secao origens">
+            <h2>Eventos por origem</h2>
+
+            {% for item in eventos_por_fonte %}
+
+                <div class="lista">
+                    <span>{{ item["_id"] or "Não identificada" }}</span>
+                    <strong>{{ item["total"] }} eventos</strong>
+                </div>
+
+            {% else %}
+
+                <p class="vazio">Nenhum evento encontrado.</p>
+
+            {% endfor %}
+        </section>
+
+    </main>
+
+    <footer>
+        SecuraPy Platform | Monitoramento e análise de segurança
+
+        <div class="integrantes">
+            <strong>FEITO POR:</strong>
+            Victoria de Paula<br>
+            Igor Andrade Cavalcante<br>
+            Eduardo Estevam<br>
+            Gabriel Laíno
+        </div>
+    </footer>
+
+</body>
+</html>

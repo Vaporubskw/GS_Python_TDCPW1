@@ -1,0 +1,68 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: securapy_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - securapy_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql:
+    image: mysql:8
+    container_name: securapy_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: securapy
+      MYSQL_USER: securapy_user
+      MYSQL_PASSWORD: securapy123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - securapy_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+
+  api:
+    build: .
+    container_name: securapy_api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: securapy_user
+      MYSQL_PASSWORD: securapy123
+      MYSQL_DATABASE: securapy
+      SECURAPY_API_TOKEN: ${SECURAPY_API_TOKEN:-securapy-token-trocar}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - securapy_network
+
+volumes:
+  mongo_data:
+  mysql_data:
+
+networks:
+  securapy_network:
+    driver: bridge

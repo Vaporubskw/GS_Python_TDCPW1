@@ -1,0 +1,12 @@
+flask
+pymongo
+mysql-connector-python
+scikit-learn
+pandas
+numpy
+joblib
+python-dotenv
+requests
+openai
+docker
+PyJWT
